@@ -9,8 +9,7 @@ import LoginScreen from "./app/screens/LoginScreen";
 import SignupScreen from "./app/screens/SignupScreen";
 import WelcomeScreen from "./app/screens/WelcomeScreen.js";
 import HomeScreen from "./app/screens/HomeScreen";
-
-// import Navigator from "./app/routes/HomeStack";
+import ResetScreen from "./app/screens/ResetScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +29,7 @@ export default function App() {
           name="home"
           component={HomeScreen}
         />
+        <Stack.Screen name="reset" component={ResetScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     // <LoginScreen />

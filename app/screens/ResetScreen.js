@@ -6,33 +6,29 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   ActivityIndicator,
 } from "react-native";
-
 import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 import { auth } from "../networking/firebase";
 
-function LoginScreen({ navigation }) {
+function ResetScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
   const pushNavigation = () => {
-    navigation.navigate("home");
-  };
-
-  const resetPassword = () => {
-    navigation.navigate("reset");
+    navigation.navigate("login");
   };
 
   const handleLogin = () => {
     auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("logged in  with:", user.email);
+      .sendPasswordResetEmail(email, password)
+      .then(() => {
+        alert(
+          "Instructions on how to reset your Password has been sent via your email"
+        );
         pushNavigation();
       })
       .catch((error) => alert(error.message));
@@ -40,7 +36,18 @@ function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.signupContainer}>
-      <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
+      <Image
+        style={styles.logo}
+        source={require("../assets/forgotpassword.png")}
+      />
+      <View style={styles.logoContainer}>
+        <Text style={styles.titleTag}>Forget your Password?</Text>
+
+        <Text style={styles.tagline}>
+          Enter your email address and we we'll send you a link to reset your
+          password
+        </Text>
+      </View>
 
       <AppTextInput
         autoCapitalize="none"
@@ -52,27 +59,14 @@ function LoginScreen({ navigation }) {
         textContentType="emailAddress"
       />
 
-      <AppTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        icon="lock"
-        onChangeText={(text) => setPassword(text)}
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        textContentType="password"
-      />
-
-      <AppButton title="Login" onPress={handleLogin} />
-      <TouchableOpacity onPress={resetPassword}>
-        <Text>Forgot password?</Text>
-      </TouchableOpacity>
+      <AppButton title="Send" onPress={handleLogin} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   logo: {
-    width: 100,
+    width: 70,
     height: 100,
     marginVertical: 50,
   },
@@ -91,6 +85,26 @@ const styles = StyleSheet.create({
   signUpTitle: {
     fontSize: 30,
   },
+
+  logoContainer: {
+    width: "100%",
+  },
+
+  titleTag: {
+    textAlign: "center",
+    fontSize: 20,
+    opacity: 0.7,
+  },
+  tagline: {
+    textAlign: "center",
+    marginTop: 20,
+    marginHorizontal: 20,
+    marginVertical: 30,
+    fontSize: 18,
+    color: "#000",
+    opacity: 0.5,
+    lineHeight: 30,
+  },
 });
 
 const act = StyleSheet.create({
@@ -105,4 +119,4 @@ const act = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default ResetScreen;
