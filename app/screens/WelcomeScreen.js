@@ -1,6 +1,10 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, SafeAreaView } from "react-native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+
+import colors from "../config/Colors";
+import AppButton from "../components/AppButton";
+import OutlineButton from "../components/OutlineButton";
 
 function WelcomeScreen(props) {
   return (
@@ -29,13 +33,20 @@ function WelcomeScreen(props) {
           actual spending to help you stay on budget.
         </Text>
       </View>
-      <View style={styles.loginButton}></View>
-      <View style={styles.registerButton}></View>
+      <AppButton title="Sign Up" />
+      <OutlineButton title="Login" />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    backgroundColor: "#f1f1f1",
+  },
+
   logo: {
     width: 100,
     height: 180,
@@ -45,28 +56,8 @@ const styles = StyleSheet.create({
 
   logoContainer: {
     width: "100%",
-    // height: 100,
     position: "absolute",
     top: "50%",
-  },
-  loginButton: {
-    height: 70,
-    width: "70%",
-    backgroundColor: "purple",
-  },
-
-  registerButton: {
-    height: 70,
-    width: "70%",
-    backgroundColor: "orange",
-    marginTop: 50,
-  },
-
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    backgroundColor: "#f1f1f1",
   },
 });
 
