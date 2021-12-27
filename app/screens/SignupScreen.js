@@ -1,19 +1,41 @@
-import React from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, TextInput, Image } from "react-native";
+
 import AppTextInput from "../components/AppTextInput";
 import OutlineButton from "../components/OutlineButton";
 
-function SignupScreen(props) {
+import { auth } from "../networking/firebase";
+import { getAuth, sendEmailVerification } from "firebase/auth";
+
+function SignupScreen({ navigation }) {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const pushNavigation = () => {
+    navigation.navigate("home");
+  };
+
+  const handleSignUp = () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Registered in with:", user.email);
+
+        pushNavigation();
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <View style={styles.signupContainer}>
-      <View style={styles.tagline}>
-        <Text style={styles.signUpTitle}>Sign Up</Text>
-      </View>
+      <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
       <AppTextInput
         autoCapitalize="none"
         autoCorrect={false}
-        keyboardType="email-address"
         icon="email"
+        keyboardType="email-address"
+        onChangeText={(text) => setEmail(text)}
         placeholder="Enter your email address"
         textContentType="emailAddress"
       />
@@ -22,31 +44,29 @@ function SignupScreen(props) {
         autoCapitalize="none"
         autoCorrect={false}
         icon="lock"
+        onChangeText={(text) => setPassword(text)}
         placeholder="Enter your password"
-        secureTextEntry
+        secureTextEntry={true}
         textContentType="password"
       />
 
-      <OutlineButton title="Sign Up" />
-      {/* <View style={styles.tagline}>
-        <Text>Your password must have the following</Text>
-      </View>
-      <View style={styles.tagline}>
-        <Text>Between 6-40 characters</Text>
-      </View>
-      <View style={styles.tagline}>
-        <Text>One special character</Text>
-      </View> */}
+      <OutlineButton title="Sign Up" onPress={handleSignUp} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 100,
+    height: 100,
+    marginVertical: 50,
+  },
   signupContainer: {
-    width: "90%",
+    flex: 1,
+    width: "100%",
     alignItems: "center",
-    // alignSelf: "center",
-    // alignContent: "center",
+    padding: 20,
+    backgroundColor: "#fff",
   },
 
   tagline: {

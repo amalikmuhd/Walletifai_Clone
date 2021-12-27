@@ -1,19 +1,48 @@
-import React from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from "react-native";
+import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
+import { auth } from "../networking/firebase";
 
-function LoginScreen(props) {
+function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const pushNavigation = () => {
+    navigation.navigate("home");
+  };
+
+  const handleLogin = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("logged in  with:", user.email);
+        pushNavigation();
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <View style={styles.signupContainer}>
-      <View style={styles.tagline}>
-        <Text style={styles.signUpTitle}>Login</Text>
-      </View>
+      <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
+
       <AppTextInput
         autoCapitalize="none"
         autoCorrect={false}
-        keyboardType="email-address"
         icon="email"
+        keyboardType="email-address"
+        onChangeText={(text) => setEmail(text)}
         placeholder="Enter your email address"
         textContentType="emailAddress"
       />
@@ -22,20 +51,29 @@ function LoginScreen(props) {
         autoCapitalize="none"
         autoCorrect={false}
         icon="lock"
+        onChangeText={(text) => setPassword(text)}
         placeholder="Enter your password"
-        secureTextEntry
+        secureTextEntry={true}
         textContentType="password"
       />
 
-      <AppButton title="Login" />
+      <AppButton title="Login" onPress={handleLogin} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    width: 100,
+    height: 100,
+    marginVertical: 50,
+  },
   signupContainer: {
-    width: "90%",
+    backgroundColor: "#fff",
+    flex: 1,
+    width: "100%",
     alignItems: "center",
+    padding: 20,
   },
 
   tagline: {
@@ -44,6 +82,18 @@ const styles = StyleSheet.create({
 
   signUpTitle: {
     fontSize: 30,
+  },
+});
+
+const act = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
 
