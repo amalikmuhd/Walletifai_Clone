@@ -1,14 +1,14 @@
 import react from "react";
 import { StatusBar } from "expo-status-bar";
 import WelcomeScreen from "./app/screens/WelcomeScreen.js";
-import AppButton from "./app/components/AppButton.js";
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import AppTextInput from "./app/components/AppTextInput.js";
+import LoginScreen from "./app/screens/LoginScreen";
+import SignupScreen from "./app/screens/SignupScreen";
 
 export default function App() {
   return (
-    // <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <WelcomeScreen />
-    // </View>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <SignupScreen />
+    </View>
   );
 }
