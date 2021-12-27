@@ -7,8 +7,11 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   ActivityIndicator,
 } from "react-native";
+import {} from "react-native-web";
 
 import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 import AppButton from "../components/AppButton";
@@ -18,6 +21,7 @@ import { auth } from "../networking/firebase";
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [loading, isLoading] = useState(false);
 
   const pushNavigation = () => {
     navigation.navigate("home");
@@ -33,40 +37,53 @@ function LoginScreen({ navigation }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("logged in  with:", user.email);
+        // setLoading(true);
+
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator />
+        </View>;
         pushNavigation();
       })
       .catch((error) => alert(error.message));
   };
 
   return (
-    <View style={styles.signupContainer}>
-      <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.signupContainer}>
+        <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
 
-      <AppTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        icon="email"
-        keyboardType="email-address"
-        onChangeText={(text) => setEmail(text)}
-        placeholder="Enter your email address"
-        textContentType="emailAddress"
-      />
+        <AppTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="email"
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(text)}
+          placeholder="Enter your email address"
+          textContentType="emailAddress"
+        />
 
-      <AppTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        icon="lock"
-        onChangeText={(text) => setPassword(text)}
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        textContentType="password"
-      />
+        <AppTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="lock"
+          onChangeText={(text) => setPassword(text)}
+          placeholder="Enter your password"
+          secureTextEntry={true}
+          textContentType="password"
+        />
 
-      <AppButton title="Login" onPress={handleLogin} />
-      <TouchableOpacity onPress={resetPassword}>
-        <Text>Forgot password?</Text>
-      </TouchableOpacity>
-    </View>
+        <AppButton title="Login" onPress={handleLogin} />
+        <TouchableOpacity onPress={resetPassword}>
+          <Text>Forgot password?</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TextInput, Image } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 
 import AppTextInput from "../components/AppTextInput";
 import OutlineButton from "../components/OutlineButton";
@@ -28,30 +36,36 @@ function SignupScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.signupContainer}>
-      <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
-      <AppTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        icon="email"
-        keyboardType="email-address"
-        onChangeText={(text) => setEmail(text)}
-        placeholder="Enter your email address"
-        textContentType="emailAddress"
-      />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.signupContainer}>
+        <Image style={styles.logo} source={require("../assets/Wlogo.png")} />
+        <AppTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="email"
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(text)}
+          placeholder="Enter your email address"
+          textContentType="emailAddress"
+        />
 
-      <AppTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        icon="lock"
-        onChangeText={(text) => setPassword(text)}
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        textContentType="password"
-      />
+        <AppTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="lock"
+          onChangeText={(text) => setPassword(text)}
+          placeholder="Enter your password"
+          secureTextEntry={true}
+          textContentType="password"
+        />
 
-      <OutlineButton title="Sign Up" onPress={handleSignUp} />
-    </View>
+        <OutlineButton title="Sign Up" onPress={handleSignUp} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
   ActivityIndicator,
 } from "react-native";
 import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
@@ -35,32 +36,38 @@ function ResetScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.signupContainer}>
-      <Image
-        style={styles.logo}
-        source={require("../assets/forgotpassword.png")}
-      />
-      <View style={styles.logoContainer}>
-        <Text style={styles.titleTag}>Forget your Password?</Text>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.signupContainer}>
+        <Image
+          style={styles.logo}
+          source={require("../assets/forgotpassword.png")}
+        />
+        <View style={styles.logoContainer}>
+          <Text style={styles.titleTag}>Forget your Password?</Text>
 
-        <Text style={styles.tagline}>
-          Enter your email address and we we'll send you a link to reset your
-          password
-        </Text>
+          <Text style={styles.tagline}>
+            Enter your email address and we we'll send you a link to reset your
+            password
+          </Text>
+        </View>
+
+        <AppTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="email"
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(text)}
+          placeholder="Enter your email address"
+          textContentType="emailAddress"
+        />
+
+        <AppButton title="Send" onPress={handleLogin} />
       </View>
-
-      <AppTextInput
-        autoCapitalize="none"
-        autoCorrect={false}
-        icon="email"
-        keyboardType="email-address"
-        onChangeText={(text) => setEmail(text)}
-        placeholder="Enter your email address"
-        textContentType="emailAddress"
-      />
-
-      <AppButton title="Send" onPress={handleLogin} />
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
